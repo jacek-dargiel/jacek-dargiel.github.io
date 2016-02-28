@@ -1,0 +1,162 @@
+<!doctype html>
+<html class="no-js">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		
+		<title>Angular Restmod: the better alternative to ng-resource | Jacek Dargiel - Frontend developer and enthusiast</title>
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		
+			<link rel="alternate" href="/atom.xml" title="Jacek Dargiel - Frontend developer and enthusiast" type="application/atom+xml">
+		
+		
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/pure/0.5.0/base-min.css">
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.1.0/css/font-awesome.min.css">
+
+		<link href='//fonts.googleapis.com/css?family=Source+Sans+Pro&amp;subset=latin-ext' rel='stylesheet' type='text/css'>
+
+		<link rel="stylesheet" href="/css/main.css" type="text/css">
+		<link rel="stylesheet" href="/css/highlight.css" type="text/css">
+
+	</head>
+<body>
+	<!--[if lt IE 10]>
+		<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+	<![endif]-->
+
+	<div id="layout" class="">
+		<div id="content" class="">
+			<article id="post-restmod-ng-resource-alternative" class="article-entry" itemscope itemtype="http://schema.org/BlogPosting">
+	<header>
+		
+  
+    <h1><a href="/restmod-ng-resource-alternative/">Angular Restmod: the better alternative to ng-resource</a></h1>
+  
+
+
+		<aside>
+			<div class="header-meta">
+				<time datetime="2014-09-19T20:00:00.000Z" itemprop="datePublished">September 19, 2014</time>
+				<!-- | 
+				<a href="#" class="button button-xsmall">
+					<i class="fa fa-github"></i>
+					Edit on Github
+				</a> -->
+			</div>
+			
+  <ul class="header-tags">
+    
+    <li><a href="/tags/AngularJS/">AngularJS</a></li>
+    
+    <li><a href="/tags/JavaScript/">JavaScript</a></li>
+    
+  </ul>
+
+
+		</aside>
+	</header>
+	
+		<p>When building enterprise web apps it’s important to make some good design choices right in the beginning of the development process. One of those things is designing how your client application will communicate with your backend server. <code>$http</code> calls are simple to use, but when your application gets bigger, you will find it unwieldy. This is where <a href="https://en.wikipedia.org/wiki/Representational_state_transfer" target="_blank" rel="external">REST APIs</a> come in. </p>
+<p>In AngularJS, <a href="https://docs.angularjs.org/api/ngResource/service/$resource" target="_blank" rel="external">ng-resource</a> is the build-in way to communicate with REST APIs. If you haven’t tried it yet, I suggest you give it a shot. Working with RESTfull resources requires a different approach, but it’s well worth getting used to. The AngularJS Tutorial has <a href="https://docs.angularjs.org/tutorial/step_11" target="_blank" rel="external">a step on how to use ng-resource</a>. This however is not the only module out there that lets you interact with your REST API. I have worked with these:</p>
+<ul>
+<li><a href="https://docs.angularjs.org/api/ngResource/service/$resource" target="_blank" rel="external">ng-resource</a></li>
+<li><a href="https://github.com/mgonto/restangular" target="_blank" rel="external">Restangular</a></li>
+<li><a href="https://github.com/FineLinePrototyping/angularjs-rails-resource" target="_blank" rel="external">Angular Rails Resource</a></li>
+</ul>
+<p>Recently however, I’ve found a new player - <a href="https://github.com/platanus/angular-restmod" target="_blank" rel="external">Angular Restmod</a>. They’ve reached a stable 1.0 release number just a few days ago, and I’ve started using it in a project I’m working on for one of our clients.</p>
+<p>Restmod tries to reach maximum compatibility with the <a href="http://jsonapi.org/" target="_blank" rel="external">JSON API standard</a>, so it can extract your resources from specific JSON roots, read metadata from the <code>meta</code> root and use linked resources. This approach is working quite well for me thus far. </p>
+<a id="more"></a>
+<p>To interact with an API, you need to define a restmod model:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.factory(<span class="string">'Bike'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">restmod</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> restmod.model(<span class="string">'/bikes'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>And from now on you can inject the resource wherever you need it. All actions are defined on the objects prototype, so you can <code>GET</code> your resource using <code>Bike.$find(1)</code>. This will issue a <code>GET</code> request to <code>/bikes/1</code> and will fill your objects with the data returned from the server. Restmod also reveals the <code>$then()</code> method, so you can do something when a response arrives:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Bike.$find(<span class="number">1</span>)</span><br><span class="line">Bike.$then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(Bike.brand === <span class="string">'giant'</span>)&#123;</span><br><span class="line">		Bike.brand = <span class="string">'Giant'</span></span><br><span class="line">		Bike.$save();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>If you need a real promise for example to resolve a route, you can use the <code>$asPromise()</code> method to get one.</p>
+<p>Restmod seriously shines with its support for model relations. You can define these kinds of relations:</p>
+<ul>
+<li><code>HasOne</code></li>
+<li><code>HasMeny</code></li>
+<li><code>BelongsTo</code></li>
+<li><code>BelongsToMeny</code></li>
+</ul>
+<p>With relations you can don’t have to use placeholder resources, you can do things like this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Define a User resource:</span></span><br><span class="line"><span class="built_in">module</span>.factory(<span class="string">'User'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">restmod</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> restmod.model(<span class="string">'/users'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// Define a Bike resource which relates to the User:</span></span><br><span class="line">modeule.factory(<span class="string">'Bike'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">restmod</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> restmod.model(<span class="string">'/bikes'</span>).mix(&#123;</span><br><span class="line">		owner: &#123;</span><br><span class="line">			belongsTo: <span class="string">'User'</span>, </span><br><span class="line">			key: <span class="string">'last_owner_id'</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Now, when you use <code>Bike.$find(1)</code>, and your API responds with something similar to this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#10;&#9;&#34;id&#34;: 1,&#10;&#9;&#34;brand&#34;: &#34;giant&#34;,&#10;&#9;&#34;last_owner_id&#34;: 42&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>Then you can get the User which owns the bike with a simple relation call: <code>Bike.owner.$fetch()</code>, which will issue a <code>GET</code> to <code>/users/42</code>.</p>
+<p>There’s a lot more you can do with Restmod. Be sure to read the <a href="https://github.com/platanus/angular-restmod/blob/master/README.md" target="_blank" rel="external">readme</a> and the <a href="https://github.com/platanus/angular-restmod/blob/master/docs/guides/integration.md" target="_blank" rel="external">API integration FAQ</a>. If you’re looking for an ORM <em>better then ng-resource</em>, then Restmod is definitely worth trying out.</p>
+
+	
+</article>
+
+<section id="comments">
+	<div id="disqus_thread"></div>
+	<script type="text/javascript">
+		var disqus_shortname = 'jacek-dargiel';
+		var disqus_identifier = 'http://blog.dargiel.net/restmod-ng-resource-alternative/';
+		var disqus_title = 'Angular Restmod: the better alternative to ng-resource';
+
+		(function() {
+			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+		</div>
+		<nav id="sidebar" class="">
+	<div id="info">
+		<div id="avatar">
+			<a href="/"><img src="/images/avatar.jpg" alt="Jacek Dargiel" class="pure-img"></a>
+			<div id="avatar-logo">
+				<a href="/"><img src="/images/logo.svg" alt="" class="pure-img"></a>
+			</div>
+		</div>
+		
+			<p id="me"><a href="/">Jacek Dargiel</a></p>
+		
+		<div id="about">
+			<p>Front-end developer @ <a href="http://biarchitects.co.uk">BI Architects</a></p>
+			<p>JavaScript &amp; HTML5 engineer</p>
+			<p><a href="/about-me/">About me</a></p>
+		</div>
+	</div>
+	<footer>
+		<ul id="icons" class="clearfix">
+			<li>
+				<a class="icon rss" href="/atom.xml" title="The blogs Atom feed"></a>
+			</li>
+			<li>
+				<a class="icon github" href="https://github.com/jacek-dargiel" title="My GitHub profile"></a>
+			</li>
+			<li>
+				<a class="icon stack" href="http://stackoverflow.com/users/3707398/jacek-dargiel" title="My Stack Overflow profile"></a>
+			</li>
+			<li>
+				<a class="icon twitter" href="https://twitter.com/JacekDargiel" title="My Twitter"></a>
+			</li>
+			<li>
+				<a class="icon linkedin" href="http://linkedin.com/pub/jacek-dargiel/a2/1b1/84/" title="My LinkedIn profile"></a>
+			</li>
+		</ul>
+		<p><a href="http://creativecommons.org/licenses/by-sa/4.0/">Feel free to share</a>. Made with <i class="fa fa-heart"></i></p>
+		<p id="powered">Powered by <a href="http://hexo.io/" title="A fast, simple &amp; powerful blog framework, powered by Node.js."><img src="/images/hexo.png" alt="">Hexo</a></p>
+	</footer>
+</nav>
+
+	</div>
+	
+<script>
+	(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+	function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+	e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+	e.src='//www.google-analytics.com/analytics.js';
+	r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+	ga('create','UA-54898988-1');ga('send','pageview');
+</script>
+
+</body>
+</html>

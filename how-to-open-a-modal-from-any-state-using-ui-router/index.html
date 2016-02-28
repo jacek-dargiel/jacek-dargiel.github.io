@@ -1,0 +1,142 @@
+<!doctype html>
+<html class="no-js">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		
+		<title>How to open a modal from any state using UI-Router | Jacek Dargiel - Frontend developer and enthusiast</title>
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		
+			<link rel="alternate" href="/atom.xml" title="Jacek Dargiel - Frontend developer and enthusiast" type="application/atom+xml">
+		
+		
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/pure/0.5.0/base-min.css">
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.1.0/css/font-awesome.min.css">
+
+		<link href='//fonts.googleapis.com/css?family=Source+Sans+Pro&amp;subset=latin-ext' rel='stylesheet' type='text/css'>
+
+		<link rel="stylesheet" href="/css/main.css" type="text/css">
+		<link rel="stylesheet" href="/css/highlight.css" type="text/css">
+
+	</head>
+<body>
+	<!--[if lt IE 10]>
+		<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+	<![endif]-->
+
+	<div id="layout" class="">
+		<div id="content" class="">
+			<article id="post-how-to-open-a-modal-from-any-state-using-ui-router" class="article-entry" itemscope itemtype="http://schema.org/BlogPosting">
+	<header>
+		
+  
+    <h1><a href="/how-to-open-a-modal-from-any-state-using-ui-router/">How to open a modal from any state using UI-Router</a></h1>
+  
+
+
+		<aside>
+			<div class="header-meta">
+				<time datetime="2014-10-09T20:30:00.000Z" itemprop="datePublished">October 9, 2014</time>
+				<!-- | 
+				<a href="#" class="button button-xsmall">
+					<i class="fa fa-github"></i>
+					Edit on Github
+				</a> -->
+			</div>
+			
+  <ul class="header-tags">
+    
+    <li><a href="/tags/AngularJS/">AngularJS</a></li>
+    
+    <li><a href="/tags/JavaScript/">JavaScript</a></li>
+    
+  </ul>
+
+
+		</aside>
+	</header>
+	
+		<p>This post is a follow-up to a question that was asked on the <a href="https://www.facebook.com/groups/angularjs.polska/" target="_blank" rel="external">AngularJS Poland</a> Facebook group. One of the members wanted to open a modal window from anywhere in the app using <a href="https://github.com/angular-ui/ui-router" target="_blank" rel="external">UI-Router</a>. At first this seemed simple enough. This is a common problem – so common that it has a section in the <a href="https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-open-a-dialogmodal-at-a-certain-state" target="_blank" rel="external">UI-Router FAQ</a>. </p>
+<h3 id="Using-a-modal-child-state"><a href="#Using-a-modal-child-state" class="headerlink" title="Using a modal child state"></a>Using a modal child state</h3><p>The most simplified example goes like this:</p>
+<iframe src="http://embed.plnkr.co/yqcT6DY6KD5A94fSvGX9/app.js" width="100%" height="300" frameborder="0" allowfullscreen></iframe>
+<p>In the above plunker we have two states defined – a parent state for the view (<code>index</code>) and a child state for the modal (<code>index.terms</code>). The child state doesn’t have a template nor controller as this isn’t an actually usable state. The magic happens because UI-Router executes the <code>onEnter</code> callback. This callback has the dependency injection system build in, and can open the modal dialog using the <code>$modal</code> service.</p>
+<p>This works fine, unfortunately, this didn’t solve the initial problem – opening the modal window from anywhere in the app. In the above example, the modal state is a child of the <code>index</code> state, and opening it from any state other than <code>index</code> will cause UI-Router to switch to <code>index</code>. To solve this problem we need to take a different approach.</p>
+<h3 id="Using-the-stateChangeStart-event"><a href="#Using-the-stateChangeStart-event" class="headerlink" title="Using the $stateChangeStart event"></a>Using the <code>$stateChangeStart</code> event</h3><iframe src="http://embed.plnkr.co/6dZfgb/app.js" width="100%" height="300" frameborder="0" allowfullscreen></iframe>
+<p>This approach involves defining a placeholder state for the modal (<code>terms</code> in the above plunker) which is a top-level state. Next we need to listen to the <code>$stateChangeStart</code> event. UI-Router broadcasts this event from the <code>$rootScope</code> using <a href="https://docs.angularjs.org/guide/scope#scope-events-propagation" target="_blank" rel="external">Angulars event system</a> every time a state is about to change. Among the arguments passed to the event listeners this event passes the <code>toState</code> object. We can use this to check which state is to be displayed, display the modal dialog using the <code>$modal</code> service, and cancel the state transition using <code>event.preventDefault()</code>. I would recommend listening to <code>$stateChangeStart</code> in the <code>run</code> block of the module – this is far more elegant than using an application-wide controller encapsulating the entire app.</p>
+<p>The above example solves the problem of displaying the modal from anywhere in the application. Some users expressed that this solution has some down sides, like unnaturally separating the modal display logic from the router configuration block. I couldn’t think of an elegant solution to this problem. If you see one, drop a line in the comments.</p>
+
+	
+</article>
+
+<section id="comments">
+	<div id="disqus_thread"></div>
+	<script type="text/javascript">
+		var disqus_shortname = 'jacek-dargiel';
+		var disqus_identifier = 'http://blog.dargiel.net/how-to-open-a-modal-from-any-state-using-ui-router/';
+		var disqus_title = 'How to open a modal from any state using UI-Router';
+
+		(function() {
+			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+			dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+		</div>
+		<nav id="sidebar" class="">
+	<div id="info">
+		<div id="avatar">
+			<a href="/"><img src="/images/avatar.jpg" alt="Jacek Dargiel" class="pure-img"></a>
+			<div id="avatar-logo">
+				<a href="/"><img src="/images/logo.svg" alt="" class="pure-img"></a>
+			</div>
+		</div>
+		
+			<p id="me"><a href="/">Jacek Dargiel</a></p>
+		
+		<div id="about">
+			<p>Front-end developer @ <a href="http://biarchitects.co.uk">BI Architects</a></p>
+			<p>JavaScript &amp; HTML5 engineer</p>
+			<p><a href="/about-me/">About me</a></p>
+		</div>
+	</div>
+	<footer>
+		<ul id="icons" class="clearfix">
+			<li>
+				<a class="icon rss" href="/atom.xml" title="The blogs Atom feed"></a>
+			</li>
+			<li>
+				<a class="icon github" href="https://github.com/jacek-dargiel" title="My GitHub profile"></a>
+			</li>
+			<li>
+				<a class="icon stack" href="http://stackoverflow.com/users/3707398/jacek-dargiel" title="My Stack Overflow profile"></a>
+			</li>
+			<li>
+				<a class="icon twitter" href="https://twitter.com/JacekDargiel" title="My Twitter"></a>
+			</li>
+			<li>
+				<a class="icon linkedin" href="http://linkedin.com/pub/jacek-dargiel/a2/1b1/84/" title="My LinkedIn profile"></a>
+			</li>
+		</ul>
+		<p><a href="http://creativecommons.org/licenses/by-sa/4.0/">Feel free to share</a>. Made with <i class="fa fa-heart"></i></p>
+		<p id="powered">Powered by <a href="http://hexo.io/" title="A fast, simple &amp; powerful blog framework, powered by Node.js."><img src="/images/hexo.png" alt="">Hexo</a></p>
+	</footer>
+</nav>
+
+	</div>
+	
+<script>
+	(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+	function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+	e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+	e.src='//www.google-analytics.com/analytics.js';
+	r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+	ga('create','UA-54898988-1');ga('send','pageview');
+</script>
+
+</body>
+</html>
