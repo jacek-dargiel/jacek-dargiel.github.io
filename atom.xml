@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Jacek Dargiel - Frontend developer and enthusiast</title>
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://blog.dargiel.net/"/>
+  <updated>2014-10-09T20:29:55.038Z</updated>
+  <id>http://blog.dargiel.net/</id>
+  
+  <author>
+    <name>Jacek Dargiel</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>How to open a modal from any state using UI-Router</title>
+    <link href="http://blog.dargiel.net/how-to-open-a-modal-from-any-state-using-ui-router/"/>
+    <id>http://blog.dargiel.net/how-to-open-a-modal-from-any-state-using-ui-router/</id>
+    <published>2014-10-09T20:30:00.000Z</published>
+    <updated>2014-10-09T20:29:55.038Z</updated>
+    
+    <content type="html">&lt;p&gt;This post is a follow-up to a question that was asked on the &lt;a href=&quot;https://www.facebook.com/groups/angularjs.polska/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;AngularJS Poland&lt;/a&gt; Facebook group. One of the members wanted to open a modal window from anywhere in the app using &lt;a href=&quot;https://github.com/angular-ui/ui-router&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;UI-Router&lt;/a&gt;. At first this seemed simple enough. This is a common problem – so common that it has a section in the &lt;a href=&quot;https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-open-a-dialogmodal-at-a-certain-state&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;UI-Router FAQ&lt;/a&gt;. &lt;/p&gt;
+&lt;h3 id=&quot;Using-a-modal-child-state&quot;&gt;&lt;a href=&quot;#Using-a-modal-child-state&quot; class=&quot;headerlink&quot; title=&quot;Using a modal child state&quot;&gt;&lt;/a&gt;Using a modal child state&lt;/h3&gt;&lt;p&gt;The most simplified example goes like this:&lt;/p&gt;
+&lt;iframe src=&quot;http://embed.plnkr.co/yqcT6DY6KD5A94fSvGX9/app.js&quot; width=&quot;100%&quot; height=&quot;300&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;p&gt;In the above plunker we have two states defined – a parent state for the view (&lt;code&gt;index&lt;/code&gt;) and a child state for the modal (&lt;code&gt;index.terms&lt;/code&gt;). The child state doesn’t have a template nor controller as this isn’t an actually usable state. The magic happens because UI-Router executes the &lt;code&gt;onEnter&lt;/code&gt; callback. This callback has the dependency injection system build in, and can open the modal dialog using the &lt;code&gt;$modal&lt;/code&gt; service.&lt;/p&gt;
+&lt;p&gt;This works fine, unfortunately, this didn’t solve the initial problem – opening the modal window from anywhere in the app. In the above example, the modal state is a child of the &lt;code&gt;index&lt;/code&gt; state, and opening it from any state other than &lt;code&gt;index&lt;/code&gt; will cause UI-Router to switch to &lt;code&gt;index&lt;/code&gt;. To solve this problem we need to take a different approach.&lt;/p&gt;
+&lt;h3 id=&quot;Using-the-stateChangeStart-event&quot;&gt;&lt;a href=&quot;#Using-the-stateChangeStart-event&quot; class=&quot;headerlink&quot; title=&quot;Using the $stateChangeStart event&quot;&gt;&lt;/a&gt;Using the &lt;code&gt;$stateChangeStart&lt;/code&gt; event&lt;/h3&gt;&lt;iframe src=&quot;http://embed.plnkr.co/6dZfgb/app.js&quot; width=&quot;100%&quot; height=&quot;300&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;p&gt;This approach involves defining a placeholder state for the modal (&lt;code&gt;terms&lt;/code&gt; in the above plunker) which is a top-level state. Next we need to listen to the &lt;code&gt;$stateChangeStart&lt;/code&gt; event. UI-Router broadcasts this event from the &lt;code&gt;$rootScope&lt;/code&gt; using &lt;a href=&quot;https://docs.angularjs.org/guide/scope#scope-events-propagation&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Angulars event system&lt;/a&gt; every time a state is about to change. Among the arguments passed to the event listeners this event passes the &lt;code&gt;toState&lt;/code&gt; object. We can use this to check which state is to be displayed, display the modal dialog using the &lt;code&gt;$modal&lt;/code&gt; service, and cancel the state transition using &lt;code&gt;event.preventDefault()&lt;/code&gt;. I would recommend listening to &lt;code&gt;$stateChangeStart&lt;/code&gt; in the &lt;code&gt;run&lt;/code&gt; block of the module – this is far more elegant than using an application-wide controller encapsulating the entire app.&lt;/p&gt;
+&lt;p&gt;The above example solves the problem of displaying the modal from anywhere in the application. Some users expressed that this solution has some down sides, like unnaturally separating the modal display logic from the router configuration block. I couldn’t think of an elegant solution to this problem. If you see one, drop a line in the comments.&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;This post is a follow-up to a question that was asked on the &lt;a href=&quot;https://www.facebook.com/groups/angularjs.polska/&quot; target=&quot;_blank&quot; 
+    
+    </summary>
+    
+    
+      <category term="AngularJS" scheme="http://blog.dargiel.net/tags/AngularJS/"/>
+    
+      <category term="JavaScript" scheme="http://blog.dargiel.net/tags/JavaScript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Angular Restmod: the better alternative to ng-resource</title>
+    <link href="http://blog.dargiel.net/restmod-ng-resource-alternative/"/>
+    <id>http://blog.dargiel.net/restmod-ng-resource-alternative/</id>
+    <published>2014-09-19T20:00:00.000Z</published>
+    <updated>2014-09-19T20:45:15.147Z</updated>
+    
+    <content type="html">&lt;p&gt;When building enterprise web apps it’s important to make some good design choices right in the beginning of the development process. One of those things is designing how your client application will communicate with your backend server. &lt;code&gt;$http&lt;/code&gt; calls are simple to use, but when your application gets bigger, you will find it unwieldy. This is where &lt;a href=&quot;https://en.wikipedia.org/wiki/Representational_state_transfer&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;REST APIs&lt;/a&gt; come in. &lt;/p&gt;
+&lt;p&gt;In AngularJS, &lt;a href=&quot;https://docs.angularjs.org/api/ngResource/service/$resource&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ng-resource&lt;/a&gt; is the build-in way to communicate with REST APIs. If you haven’t tried it yet, I suggest you give it a shot. Working with RESTfull resources requires a different approach, but it’s well worth getting used to. The AngularJS Tutorial has &lt;a href=&quot;https://docs.angularjs.org/tutorial/step_11&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;a step on how to use ng-resource&lt;/a&gt;. This however is not the only module out there that lets you interact with your REST API. I have worked with these:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://docs.angularjs.org/api/ngResource/service/$resource&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ng-resource&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/mgonto/restangular&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Restangular&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/FineLinePrototyping/angularjs-rails-resource&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Angular Rails Resource&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Recently however, I’ve found a new player - &lt;a href=&quot;https://github.com/platanus/angular-restmod&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Angular Restmod&lt;/a&gt;. They’ve reached a stable 1.0 release number just a few days ago, and I’ve started using it in a project I’m working on for one of our clients.&lt;/p&gt;
+&lt;p&gt;Restmod tries to reach maximum compatibility with the &lt;a href=&quot;http://jsonapi.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;JSON API standard&lt;/a&gt;, so it can extract your resources from specific JSON roots, read metadata from the &lt;code&gt;meta&lt;/code&gt; root and use linked resources. This approach is working quite well for me thus far. &lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;To interact with an API, you need to define a restmod model:&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;module&lt;/span&gt;.factory(&lt;span class=&quot;string&quot;&gt;&#39;Bike&#39;&lt;/span&gt;, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;restmod&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; restmod.model(&lt;span class=&quot;string&quot;&gt;&#39;/bikes&#39;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;And from now on you can inject the resource wherever you need it. All actions are defined on the objects prototype, so you can &lt;code&gt;GET&lt;/code&gt; your resource using &lt;code&gt;Bike.$find(1)&lt;/code&gt;. This will issue a &lt;code&gt;GET&lt;/code&gt; request to &lt;code&gt;/bikes/1&lt;/code&gt; and will fill your objects with the data returned from the server. Restmod also reveals the &lt;code&gt;$then()&lt;/code&gt; method, so you can do something when a response arrives:&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Bike.$find(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Bike.$then(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;)&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(Bike.brand === &lt;span class=&quot;string&quot;&gt;&#39;giant&#39;&lt;/span&gt;)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		Bike.brand = &lt;span class=&quot;string&quot;&gt;&#39;Giant&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		Bike.$save();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;If you need a real promise for example to resolve a route, you can use the &lt;code&gt;$asPromise()&lt;/code&gt; method to get one.&lt;/p&gt;
+&lt;p&gt;Restmod seriously shines with its support for model relations. You can define these kinds of relations:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;HasOne&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;HasMeny&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;BelongsTo&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;BelongsToMeny&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;With relations you can don’t have to use placeholder resources, you can do things like this:&lt;/p&gt;
+&lt;figure class=&quot;highlight javascript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Define a User resource:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;module&lt;/span&gt;.factory(&lt;span class=&quot;string&quot;&gt;&#39;User&#39;&lt;/span&gt;, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;restmod&lt;/span&gt;) &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; restmod.model(&lt;span class=&quot;string&quot;&gt;&#39;/users&#39;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Define a Bike resource which relates to the User:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;modeule.factory(&lt;span class=&quot;string&quot;&gt;&#39;Bike&#39;&lt;/span&gt;, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;restmod&lt;/span&gt;)&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; restmod.model(&lt;span class=&quot;string&quot;&gt;&#39;/bikes&#39;&lt;/span&gt;).mix(&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		owner: &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			belongsTo: &lt;span class=&quot;string&quot;&gt;&#39;User&#39;&lt;/span&gt;, &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			key: &lt;span class=&quot;string&quot;&gt;&#39;last_owner_id&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;Now, when you use &lt;code&gt;Bike.$find(1)&lt;/code&gt;, and your API responds with something similar to this:&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&amp;#10;&amp;#9;&amp;#34;id&amp;#34;: 1,&amp;#10;&amp;#9;&amp;#34;brand&amp;#34;: &amp;#34;giant&amp;#34;,&amp;#10;&amp;#9;&amp;#34;last_owner_id&amp;#34;: 42&amp;#10;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;Then you can get the User which owns the bike with a simple relation call: &lt;code&gt;Bike.owner.$fetch()&lt;/code&gt;, which will issue a &lt;code&gt;GET&lt;/code&gt; to &lt;code&gt;/users/42&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;There’s a lot more you can do with Restmod. Be sure to read the &lt;a href=&quot;https://github.com/platanus/angular-restmod/blob/master/README.md&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;readme&lt;/a&gt; and the &lt;a href=&quot;https://github.com/platanus/angular-restmod/blob/master/docs/guides/integration.md&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;API integration FAQ&lt;/a&gt;. If you’re looking for an ORM &lt;em&gt;better then ng-resource&lt;/em&gt;, then Restmod is definitely worth trying out.&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;When building enterprise web apps it’s important to make some good design choices right in the beginning of the development process. One of those things is designing how your client application will communicate with your backend server. &lt;code&gt;$http&lt;/code&gt; calls are simple to use, but when your application gets bigger, you will find it unwieldy. This is where &lt;a href=&quot;https://en.wikipedia.org/wiki/Representational_state_transfer&quot;&gt;REST APIs&lt;/a&gt; come in. &lt;/p&gt;
+&lt;p&gt;In AngularJS, &lt;a href=&quot;https://docs.angularjs.org/api/ngResource/service/$resource&quot;&gt;ng-resource&lt;/a&gt; is the build-in way to communicate with REST APIs. If you haven’t tried it yet, I suggest you give it a shot. Working with RESTfull resources requires a different approach, but it’s well worth getting used to. The AngularJS Tutorial has &lt;a href=&quot;https://docs.angularjs.org/tutorial/step_11&quot;&gt;a step on how to use ng-resource&lt;/a&gt;. This however is not the only module out there that lets you interact with your REST API. I have worked with these:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://docs.angularjs.org/api/ngResource/service/$resource&quot;&gt;ng-resource&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/mgonto/restangular&quot;&gt;Restangular&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/FineLinePrototyping/angularjs-rails-resource&quot;&gt;Angular Rails Resource&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Recently however, I’ve found a new player - &lt;a href=&quot;https://github.com/platanus/angular-restmod&quot;&gt;Angular Restmod&lt;/a&gt;. They’ve reached a stable 1.0 release number just a few days ago, and I’ve started using it in a project I’m working on for one of our clients.&lt;/p&gt;
+&lt;p&gt;Restmod tries to reach maximum compatibility with the &lt;a href=&quot;http://jsonapi.org/&quot;&gt;JSON API standard&lt;/a&gt;, so it can extract your resources from specific JSON roots, read metadata from the &lt;code&gt;meta&lt;/code&gt; root and use linked resources. This approach is working quite well for me thus far. &lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="AngularJS" scheme="http://blog.dargiel.net/tags/AngularJS/"/>
+    
+      <category term="JavaScript" scheme="http://blog.dargiel.net/tags/JavaScript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>WarsawJS &amp;#35;1</title>
+    <link href="http://blog.dargiel.net/warsaw-js-1/"/>
+    <id>http://blog.dargiel.net/warsaw-js-1/</id>
+    <published>2014-09-17T14:00:00.000Z</published>
+    <updated>2014-09-17T12:56:49.816Z</updated>
+    
+    <content type="html">&lt;p&gt;Today meet.js Warsaw posted info on &lt;a href=&quot;http://www.meetup.com/WarsawJS/events/202280942/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;WarsawJS&lt;/a&gt; on their Facebook page. I never heard about it before, so I got excited. Their first meetup was today so, right after work I went to &lt;a href=&quot;http://panstwomiasto.pl/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;państwomiast&lt;/a&gt; where it was held. I was a few minutes late, and the room was almost full so I sat in one of the last rows and saw only the upper half of the screen. So after 15 minutes of sponsors, thank-yous, and bravos, the first presentation rolled out.&lt;/p&gt;
+&lt;!-- more:false --&gt;
+&lt;h3 id=&quot;The-future-of-JavaScript-ES6&quot;&gt;&lt;a href=&quot;#The-future-of-JavaScript-ES6&quot; class=&quot;headerlink&quot; title=&quot;The future of JavaScript - ES6&quot;&gt;&lt;/a&gt;The future of JavaScript - ES6&lt;/h3&gt;&lt;p&gt;First off was Adam Babik with his talk about the new features in ECMAScript 6. ES6 is a broad subject, enough to talk for hours. No wonder Adam only mentioned the powerful class’ syntax, or the native promises, or modules. He focused more on generators and iterators, unfortunately he failed to clearly explain these new features, but he did supply some interesting links to &lt;a href=&quot;http://davidwalsh.name/es6-generators/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Kyle Simpson’s series of posts on generators&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&quot;Ember-for-Multi-Page-applications&quot;&gt;&lt;a href=&quot;#Ember-for-Multi-Page-applications&quot; class=&quot;headerlink&quot; title=&quot;Ember for Multi Page applications&quot;&gt;&lt;/a&gt;Ember for Multi Page applications&lt;/h3&gt;&lt;p&gt;Krzysztof Modras showed an unorthodox approach to Ember.js development. He proposed to use Ember in regular webapps living in the standard request-response, client-server cycle. Krzysztof explained that Ember isn’t as opinionated as some other frameworks, you’re not required to use all of its components, and you can use models, controllers and have the benefit of the testable approach promoted by Ember.&lt;/p&gt;
+&lt;p&gt;Too bad his presentation ended before I noticed it begun - after literally 5 minutes. I think he could have dived in a bit deeper.&lt;/p&gt;
+&lt;h3 id=&quot;Commercial-OpenStreetMap-implementation&quot;&gt;&lt;a href=&quot;#Commercial-OpenStreetMap-implementation&quot; class=&quot;headerlink&quot; title=&quot;Commercial OpenStreetMap implementation&quot;&gt;&lt;/a&gt;Commercial OpenStreetMap implementation&lt;/h3&gt;&lt;p&gt;Marcin Cimaszewski had a very interesting talk on how he and his team implemented &lt;a href=&quot;https://www.openstreetmap.org/about&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;OpenStreetMap&lt;/a&gt;. If you never implemented any maps on a high traffic website, map services like Google Maps or Bing Maps are expensive. That’s relative of course, and you may find it cost-effective, or not.&lt;/p&gt;
+&lt;p&gt;Marcin’s company found it to be &lt;strong&gt;not&lt;/strong&gt;, so they wanted an alternative, and they went for OpenStreetMap, a self-hosted solution without any day-to-day cost or licensing fees. This poses some new and exciting challanges, like map tile caching and map accuracy.&lt;/p&gt;
+&lt;p&gt;I found his presentation to be the most interesting, even though it was more focused on the business aspect, not the developer side of the implementation.&lt;/p&gt;
+&lt;h3 id=&quot;Our-first-Samsung-Smart-TV-app&quot;&gt;&lt;a href=&quot;#Our-first-Samsung-Smart-TV-app&quot; class=&quot;headerlink&quot; title=&quot;Our first Samsung Smart TV app&quot;&gt;&lt;/a&gt;Our first Samsung Smart TV app&lt;/h3&gt;&lt;p&gt;Piotr Kowalski showed how his company builds applications for Samsung’s Smart TVs, and what are the cool things you can do there, and what are the quirks of such development. This process is very different from regular web app development. TVs are not computers, there is no mouse/keyboard, there’s a remote controller, your processing power is limited, and don’t forget about fragmentation.&lt;/p&gt;
+&lt;h3 id=&quot;Wrap-up&quot;&gt;&lt;a href=&quot;#Wrap-up&quot; class=&quot;headerlink&quot; title=&quot;Wrap up&quot;&gt;&lt;/a&gt;Wrap up&lt;/h3&gt;&lt;p&gt;All things considered, I had a feeling I was on one of the polish news portals - bloated with ads that scream, jump, and hide the close button as much as they can. I think you can make a meetup without promoting 5+ sponsors, as meet.js Warsaw, or &lt;a href=&quot;/ng-poznan-4&quot;&gt;ng-poznan&lt;/a&gt; have shown. You don’t have to give every person in the room a free beer to force them to come to your conference :) These guys definitely should join forces with &lt;a href=&quot;http://meetjs.pl&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;meet.js&lt;/a&gt;.&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Today meet.js Warsaw posted info on &lt;a href=&quot;http://www.meetup.com/WarsawJS/events/202280942/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;WarsawJS&lt;/a
+    
+    </summary>
+    
+    
+      <category term="Conferences" scheme="http://blog.dargiel.net/tags/Conferences/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ng-poznan &amp;#35;4</title>
+    <link href="http://blog.dargiel.net/ng-poznan-4/"/>
+    <id>http://blog.dargiel.net/ng-poznan-4/</id>
+    <published>2014-09-12T14:00:00.000Z</published>
+    <updated>2014-09-12T14:37:57.771Z</updated>
+    
+    <content type="html">&lt;p&gt;So I’ve arrived in Poznań for the fourth &lt;a href=&quot;http://www.meetup.com/ng-poznan-meetup/events/186497732/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ng-poznan AngularJS meetup&lt;/a&gt;. After grabbing a coffee in &lt;a href=&quot;https://www.facebook.com/BigfootCoffeeShop&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Bigfoot Coffee Shop&lt;/a&gt; I found my way to the venue - &lt;a href=&quot;https://www.facebook.com/kunacicha&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Cicha Kuna&lt;/a&gt;. I’ve arrived at 17:55 and found 50+ people there, so I took one of the last seats, right next to the bar. The meetup promptly started with a 15 minute slip.&lt;/p&gt;
+&lt;p&gt;The first talk was “Automation in the ng-world” by &lt;a href=&quot;http://marcin-wosinek.github.io/blog/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Marcin Wosinek&lt;/a&gt;. Marcin talked about Karma, Grunt and Yeoman - all cool stuff to learn if you don’t know about them. Too bad all of this was really basic. I don’t know how to do unit tests to be honest. I tried numerous tutorials, and still can’t get the hang of it when it comes to writing &lt;em&gt;real code&lt;/em&gt;, so I’m always hoping for someone to show me inside-out how to do it. Well, maybe next time. Marcin also mentioned another interesting product - &lt;a href=&quot;http://www.sonarqube.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;SonarQube&lt;/a&gt; - a &lt;a href=&quot;https://en.wikipedia.org/wiki/Technical_debt&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;technical debt&lt;/a&gt; analyzer. I need to have closer look at that.&lt;/p&gt;
+&lt;p&gt;The second talk was by &lt;a href=&quot;https://twitter.com/marsanla&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Marcos Sanz Latorre&lt;/a&gt; from Spain. His team developed &lt;a href=&quot;https://github.com/Elefrant/elefrant&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Elefrant&lt;/a&gt; - a JS framework for building APIs. Marcos showed some really cool stuff. If you’re building something non-trivial, give it a look. The framework is specialized for APIs, so it’s certainly a valid alternative to building your API in Express or Django or Symfony.&lt;/p&gt;
+&lt;p&gt;Finally an anonymous guy (sorry friend, I didn’t catch your name) did his lightning talk about mocking websockets using &lt;a href=&quot;https://github.com/UsabilityTools/websocket-mock&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;websocket-mocks&lt;/a&gt;. The service has the same interface as the Websocket API implemented in browsers, though it’s not unit tested… yet ;)&lt;/p&gt;
+&lt;p&gt;Finally the ng-poznan team drew (using &lt;code&gt;~~(Math.random()*110)&lt;/code&gt; ;) ) one ticket for &lt;a href=&quot;http://summit.meetjs.pl/2014/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;meet.js summit&lt;/a&gt;. Thankfully, I already have my ticket. :)&lt;/p&gt;
+&lt;p&gt;Overall I’m happy with the meetup, the talks were quite interesting, though I would like to hear a bit more. I always enjoy visiting Poznań, so I’ll probably find myself there again, next month. &lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;So I’ve arrived in Poznań for the fourth &lt;a href=&quot;http://www.meetup.com/ng-poznan-meetup/events/186497732/&quot; target=&quot;_blank&quot; rel=&quot;external
+    
+    </summary>
+    
+    
+      <category term="AngularJS" scheme="http://blog.dargiel.net/tags/AngularJS/"/>
+    
+      <category term="Conferences" scheme="http://blog.dargiel.net/tags/Conferences/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>About me</title>
+    <link href="http://blog.dargiel.net/about-me/"/>
+    <id>http://blog.dargiel.net/about-me/</id>
+    <published>2014-08-27T00:00:00.000Z</published>
+    <updated>2014-08-27T08:22:24.154Z</updated>
+    
+    <content type="html">&lt;p&gt;Hi there!&lt;/p&gt;
+&lt;p&gt;My name is Jacek Dargiel. I’m a Front-end Developer from the ever exciting capital city of Poland. I work for &lt;a href=&quot;http://biarchitects.co.uk&quot; title=&quot;Business Intelligence Architects is an innovative IT company&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;BI&amp;nbsp;Architects&lt;/a&gt; - a growing software house focused on web development in an agile fashion. I&amp;nbsp;have two years of commercial FE Development experience, with some non-commercial projects earlier. &lt;em&gt;I&amp;nbsp;will not pretend to be an expert in anything.&lt;/em&gt; I&amp;nbsp;do however &lt;strong&gt;love to learn and consume knowledge&lt;/strong&gt;. I’m an enthusiast of shiny new technologies. Sometimes an evangelist even. I&amp;nbsp;work with HTML5, CSS3, JS Web APIs, AngularJS etc.&lt;/p&gt;
+&lt;p&gt;This blog is my playground. You can read my thoughts on the technical aspects of the projects I&amp;nbsp;work on at the moment, technologies I&amp;nbsp;choose, and why. I&amp;nbsp;hope some of this will come in handy to someone. If you like what you read here, please subscribe to my &lt;a href=&quot;/atom.xml&quot; title=&quot;The blog&amp;#39;s Atom feed&quot;&gt;feed&lt;/a&gt; and share links with your friends and co-workers. All the content you’ll find here is licensed under a &lt;a href=&quot;http://creativecommons.org/licenses/by-sa/4.0/&quot; title=&quot;Creative Commons By - Share alike license&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Creative Commons license&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;Oh, and find me on Front-end conferences in Warsaw and around Poland.&lt;/p&gt;
+&lt;p&gt;Have a splendid day!&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Hi there!&lt;/p&gt;
+&lt;p&gt;My name is Jacek Dargiel. I’m a Front-end Developer from the ever exciting capital city of Poland. I work for &lt;a href=&quot;h
+    
+    </summary>
+    
+    
+      <category term="Meta" scheme="http://blog.dargiel.net/tags/Meta/"/>
+    
+  </entry>
+  
+</feed>
