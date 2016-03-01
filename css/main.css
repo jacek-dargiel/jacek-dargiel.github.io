@@ -76,24 +76,25 @@ a:hover {
   height: 28px;
   display: inline-block;
   transition: all 0.3s ease-in-out;
+  background-size: cover;
 }
 #sidebar footer ul li a.icon:hover {
-  background-position: 0 -38px;
+  background-position: 0 -37px;
 }
 #sidebar footer ul li a.icon.rss {
-  background-image: url('/images/rss.png');
+  background-image: url('/images/feed.svg');
 }
 #sidebar footer ul li a.icon.twitter {
-  background-image: url('/images/twitter.png');
+  background-image: url('/images/twitter.svg');
 }
 #sidebar footer ul li a.icon.linkedin {
-  background-image: url('/images/linkedin.png');
+  background-image: url('/images/linkedin.svg');
 }
 #sidebar footer ul li a.icon.github {
-  background-image: url('/images/github.png');
+  background-image: url('/images/gh.svg');
 }
 #sidebar footer ul li a.icon.stack {
-  background-image: url('/images/stack.png');
+  background-image: url('/images/so.svg');
 }
 #sidebar footer p {
   margin: 0;
